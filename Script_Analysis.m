@@ -511,5 +511,6 @@ for i = 1:size(con_R_fail_emg, 1)
 end
 legend('rel R fail. EMG', 'area R fail. EMG', 'rel R fail. EMG vel.');
 
+%% End
 
 
