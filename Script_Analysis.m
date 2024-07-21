@@ -474,7 +474,19 @@ for i = 1:size(con_R_fail_emg, 1)
     % min_location = find(diff_emg_and_vel == where_is_it_min);
     % stopping_end_time = min_location;
 
-    stopping_end_time = find(abs(con_R_fail_emg(n_trial,:)) == stopping_end);
+    avg_volatility_range = 1001; %may want to adjust this, also still may want to have general cutoff
+    avg_volatility_range = 1:avg_volatility_range;
+    avg_volatility = mean(abs(con_R_fail_emg(n_trial, avg_volatility_range)));
+    con_R_fail_emg_adj = con_R_fail_emg(n_trial,:) - avg_volatility;
+    close_points = find(abs(con_R_fail_emg_adj(:)) < 0.1);
+    points_past_peak = close_points(close_points > stopping_amplitude_time);
+    if isempty(points_past_peak)
+        stopping_end_time = find(abs(con_R_fail_emg(n_trial,:)) == stopping_end);
+    else
+        stopping_end_time = points_past_peak(1);
+    end
+
+    % stopping_end_time = find(abs(con_R_fail_emg(n_trial,:)) == stopping_end);
     stopping_start_time = 1001;
     stopping_duration = stopping_end_time - stopping_start_time; %gets recalculated again below in case values change
     stopping_surface = trapz(stopping_start_time:stopping_end_time, con_R_fail_emg(n_trial, stopping_start_time:stopping_end_time));
