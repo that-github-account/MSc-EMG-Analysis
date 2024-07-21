@@ -456,6 +456,8 @@ for i = 1:size(con_R_fail_emg, 1)
     stopping_end = min(abs(con_R_fail_emg(n_trial, stopping_amplitude_time:2001)));
 
     % alternative approaches below decrease performance
+    % maybe just choosing a cutoff at e.g., 800 post stop is better?
+    % or maybe find velocity 0 post emg adjusted?
 
     % stopping_end = con_R_fail_emg(n_trial, abs(con_R_fail_emg(n_trial, stopping_amplitude_time:2001)) < 0.5);
 
@@ -466,7 +468,12 @@ for i = 1:size(con_R_fail_emg, 1)
     % stopping_end = min(abs(con_R_fail_emg_adj(stopping_amplitude_time:2001)));
     % stopping_end_time = find(abs(con_R_fail_emg_adj(:)) == stopping_end);
     % stopping_end = con_R_fail_emg(n_trial, stopping_end_time);
-    
+
+    % diff_emg_and_vel = abs(con_R_fail_emg(n_trial, :) - abs(con_R_fail_vel(n_trial, :)));
+    % where_is_it_min = min(diff_emg_and_vel(stopping_amplitude_time:2001));
+    % min_location = find(diff_emg_and_vel == where_is_it_min);
+    % stopping_end_time = min_location;
+
     stopping_end_time = find(abs(con_R_fail_emg(n_trial,:)) == stopping_end);
     stopping_start_time = 1001;
     stopping_duration = stopping_end_time - stopping_start_time; %gets recalculated again below in case values change
@@ -504,6 +511,7 @@ for i = 1:size(con_R_fail_emg, 1)
     plot(time_stoplock,con_R_fail_emgvel (n_trial,:), 'Color', [0.5 0.5 0.5], 'LineWidth', linewidz);
     yline(0, '--');
     yline(avg_volatilityvel, '-');
+    yline(avg_volatility, '--');
     xline(stopping_start_time-1001);
     xline(stopping_end_time-1001);
     xline(stopping_amplitude_time-1001);
