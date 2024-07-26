@@ -533,4 +533,7 @@ legend('rel R fail. EMG', 'area R fail. EMG', 'rel R fail. EMG vel.');
 
 %% End
 
+%late period, piece of information, also use velocity, control principle
+%velocity, classes of afferent fibres
+
 
