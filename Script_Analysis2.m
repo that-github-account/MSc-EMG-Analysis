@@ -391,4 +391,7 @@ for p = 1:length(filenames)
         end
     end
 
+save("force_data.mat", "all_force_data");
+save("emg_data.mat", "all_emg_data");
+
 end
