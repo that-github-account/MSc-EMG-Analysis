@@ -394,7 +394,7 @@ for p = 1:length(filenames)
 save("force_data.mat", "all_force_data");
 save("emg_data.mat", "all_emg_data");
 
-writematrix(all_force_data, "force.csv");
-writematrix(all_emg_data, "emg.csv");
+writematrix(all_force_data, "force_data.csv");
+writematrix(all_emg_data, "emg_data.csv");
 
 end
