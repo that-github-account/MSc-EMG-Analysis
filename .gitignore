@@ -35,3 +35,8 @@
 /Analog_all_S8.mat
 /Analog_all_S9.mat
 /Script_for_Felix.m
+*.csv
+emg_data - first run.mat
+emg_data.mat
+force_data.mat
+force_data - first run.mat
