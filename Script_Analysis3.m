@@ -216,6 +216,9 @@ for p = 1:length(filenames)
                 n_trial = i;
                 stopping_amplitude = max(dataset(n_trial, 1001:2001));
                 stopping_amplitude_time = find(dataset(n_trial,:) == stopping_amplitude);
+
+                stopping_slope = max(setvel(n_trial, :));
+
                 stopping_end = min(abs(dataset(n_trial, stopping_amplitude_time:2001)));
                 stopping_end_time = find(abs(dataset(n_trial,:)) == stopping_end);
                 stopping_start_time = 1001;
@@ -265,7 +268,7 @@ for p = 1:length(filenames)
                     classification = "fail";
                 end
 
-                all_force_data = [all_force_data; stopping_start_time-1001, stopping_amplitude_time-1001, stopping_end_time-1001, stopping_amplitude ,stopping_surface, stopping_duration, participant_id, go_direction, classification];
+                all_force_data = [all_force_data; stopping_start_time-1001, stopping_amplitude_time-1001, stopping_end_time-1001, stopping_amplitude, stopping_surface, stopping_duration, stopping_slope, avg_volatility, avg_volatilityvel, participant_id, go_direction, classification];
             end
         end
     end
@@ -351,7 +354,7 @@ for p = 1:length(filenames)
                     classification = "fail";
                 end
 
-                all_emg_data = [all_emg_data; stopping_start_time-1001, stopping_amplitude_time-1001, stopping_end_time-1001, stopping_amplitude ,stopping_surface, stopping_duration, stopping_slope, participant_id, go_direction, classification];                
+                all_emg_data = [all_emg_data; stopping_start_time-1001, stopping_amplitude_time-1001, stopping_end_time-1001, stopping_amplitude ,stopping_surface, stopping_duration, stopping_slope, avg_volatility, avg_volatilityvel, participant_id, go_direction, classification];                
             end
         end
     end
