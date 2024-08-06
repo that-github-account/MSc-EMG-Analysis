@@ -214,7 +214,10 @@ for p = 1:length(filenames)
 
             for i = 1:size(dataset, 1)
                 n_trial = i;
-                stopping_amplitude = max(dataset(n_trial, 1001:2001));
+
+                end_cutoff = 400;
+
+                stopping_amplitude = max(dataset(n_trial, 1001:2001 - end_cutoff));
                 stopping_amplitude_time = find(dataset(n_trial,:) == stopping_amplitude);
 
                 stopping_slope = max(setvel(n_trial, :));
@@ -242,7 +245,12 @@ for p = 1:length(filenames)
                 if isempty(vel_0_closest_to_peak)
                     disp("skipped");
                 else
-                    stopping_start_time = vel_0_closest_to_peak;
+                    start_value_replace = find(dataset(n_trial, vel_0_closest_to_peak:2001)>0, 1) + vel_0_closest_to_peak-1;
+                    if isempty(start_value_replace)
+                        disp("no more positives")
+                    else
+                        stopping_start_time = start_value_replace;
+                    end
                 end
 
                 stopping_duration = stopping_end_time - stopping_start_time; %gets recalculated again below in case values change
@@ -291,7 +299,9 @@ for p = 1:length(filenames)
             for i = 1:size(dataset, 1)
                 n_trial = i;
 
-                stopping_amplitude = max(dataset(n_trial, 1001:2001));
+                end_cutoff = 400;
+
+                stopping_amplitude = max(dataset(n_trial, 1001:2001 - end_cutoff));
                 stopping_amplitude_time = find(dataset(n_trial,:) == stopping_amplitude);
 
                 stopping_slope = max(setvel(n_trial, :));
@@ -328,7 +338,12 @@ for p = 1:length(filenames)
                 if isempty(vel_0_closest_to_peak)
                     disp("skipped");
                 else
-                    stopping_start_time = vel_0_closest_to_peak;
+                    start_value_replace = find(dataset(n_trial, vel_0_closest_to_peak:2001)>0, 1) + vel_0_closest_to_peak-1;
+                    if isempty(start_value_replace)
+                        disp("no more positives")
+                    else
+                        stopping_start_time = start_value_replace;
+                    end
                 end
 
                 stopping_duration = stopping_end_time - stopping_start_time; %gets recalculated again below in case values change

@@ -18,7 +18,7 @@ plot_success = true;
 plot_passive = false;
 
 all_subjects = true; % specify subject if false 
-specific_subject = 1;
+specific_subject = 15;
 
 which_data = 2; %1 = trials excluded, 2 = trials not excluded
 
@@ -215,8 +215,12 @@ for p = 1:length(filenames)
             for i = 1:size(dataset, 1)
                 figure(k+figure_placeholder);
                 n_trial = i;
-                stopping_amplitude = max(dataset(n_trial, 1001:2001));
+
+                end_cutoff = 400;
+
+                stopping_amplitude = max(dataset(n_trial, 1001:2001 - end_cutoff));
                 stopping_amplitude_time = find(dataset(n_trial,:) == stopping_amplitude);
+
                 stopping_end = min(abs(dataset(n_trial, stopping_amplitude_time:2001)));
                 stopping_end_time = find(abs(dataset(n_trial,:)) == stopping_end);
                 stopping_start_time = 1001;
@@ -240,7 +244,12 @@ for p = 1:length(filenames)
                 if isempty(vel_0_closest_to_peak)
                     disp("skipped");
                 else
-                    stopping_start_time = vel_0_closest_to_peak;
+                    start_value_replace = find(dataset(n_trial, vel_0_closest_to_peak:2001)>0, 1) + vel_0_closest_to_peak-1;
+                    if isempty(start_value_replace)
+                        disp("no more positives")
+                    else
+                        stopping_start_time = start_value_replace;
+                    end
                 end
 
                 stopping_duration = stopping_end_time - stopping_start_time; %gets recalculated again below in case values change
@@ -307,7 +316,9 @@ for p = 1:length(filenames)
                 figure((k+figure_placeholder)*100);
                 n_trial = i;
 
-                stopping_amplitude = max(dataset(n_trial, 1001:2001));
+                end_cutoff = 400;
+
+                stopping_amplitude = max(dataset(n_trial, 1001:2001 - end_cutoff));
                 stopping_amplitude_time = find(dataset(n_trial,:) == stopping_amplitude);
 
                 avg_volatility_range = 801;
@@ -343,7 +354,12 @@ for p = 1:length(filenames)
                 if isempty(vel_0_closest_to_peak)
                     disp("skipped");
                 else
-                    stopping_start_time = vel_0_closest_to_peak;
+                    start_value_replace = find(dataset(n_trial, vel_0_closest_to_peak:2001)>0, 1) + vel_0_closest_to_peak-1;
+                    if isempty(start_value_replace)
+                        disp("no more positives")
+                    else
+                        stopping_start_time = start_value_replace;
+                    end
                 end
 
                 stopping_duration = stopping_end_time - stopping_start_time; %gets recalculated again below in case values change
@@ -391,10 +407,10 @@ for p = 1:length(filenames)
         end
     end
 
-save("force_data.mat", "all_force_data");
-save("emg_data.mat", "all_emg_data");
+%save("force_data.mat", "all_force_data");
+%save("emg_data.mat", "all_emg_data");
 
-writematrix(all_force_data, "force_data.csv");
-writematrix(all_emg_data, "emg_data.csv");
+%writematrix(all_force_data, "force_data.csv");
+%writematrix(all_emg_data, "emg_data.csv");
 
 end
