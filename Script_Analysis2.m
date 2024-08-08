@@ -17,8 +17,8 @@ plot_success = true;
 
 plot_passive = false;
 
-all_subjects = true; % specify subject if false 
-specific_subject = 15;
+all_subjects = false; % specify subject if false 
+specific_subject = 17;
 
 which_data = 2; %1 = trials excluded, 2 = trials not excluded
 
@@ -406,6 +406,28 @@ for p = 1:length(filenames)
 
         end
     end
+
+%% Correct Force/EMG Data
+
+% for trials where extracted max amplitude over the response window was
+% negative there was no response so ampltiude, duration, surface, and slope
+% should be 0 
+
+% for trials where extracted surface is negative (can happen due to chances) the area classified is
+% predominantly negative and so does not actually reflect and increase
+% despite the amplitude still being large (on these trials it will be
+% comparateively very small) so theses are also changed to 0
+
+index_of_values_to_replace = str2double(all_force_data(:, 4:5)) < 0;
+index_of_values_to_replace = (index_of_values_to_replace(:, 1) + index_of_values_to_replace(:, 2)) > 0;
+all_force_data(index_of_values_to_replace, 4:7) = 0;
+
+index_of_values_to_replace = str2double(all_emg_data(:, 4:5)) < 0;
+index_of_values_to_replace = (index_of_values_to_replace(:, 1) + index_of_values_to_replace(:, 2)) > 0;
+all_emg_data(index_of_values_to_replace, 4:7) = 0;
+
+
+%% Save Data
 
 %save("force_data.mat", "all_force_data");
 %save("emg_data.mat", "all_emg_data");
