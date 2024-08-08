@@ -396,7 +396,7 @@ all_emg_data(index_of_values_to_replace, 4:7) = 0;
 
 %% Settings
 
-quantile_size = 0.35;
+quantile_size = 0.1;
 
 %
 
@@ -426,8 +426,8 @@ for i = participant_numbers
     participant_data_R = participant_data(participant_data(:, 11) == "R", :);
     participant_data_L = participant_data(participant_data(:, 11) == "L", :);
     
-    velocity_R = str2double(participant_data_R(:, 13));
-    velocity_L = str2double(participant_data_L(:, 13));
+    velocity_R = str2double(participant_data_R(:, 7));
+    velocity_L = str2double(participant_data_L(:, 7));
 
     median_velocity_R = median(velocity_R);
     median_velocity_L = median(velocity_L);
@@ -703,5 +703,14 @@ all_force_data(:, 14) = [];
 all_emg_data(:, 13) = [];
 all_emg_data(:, 14) = [];
 
-writematrix(all_force_data, "force_data_reclassified.csv");
-writematrix(all_emg_data, "emg_data_reclassified.csv");
+%% Check that there is no trials with 0 included in failed reclassification
+
+check(:, 1) = all_force_data(:, 14) == "true";
+check(:, 2) = str2double(all_force_data(:, 7)) == 0;
+check(:, 3) = check(:, 1) + check(:, 2);
+check(:, 4) = check(:, 3) == 2;
+disp("n is " + string(sum(check(:, 4)))) % returns the number of trials with 0 but failed
+
+
+%writematrix(all_force_data, "force_data_reclassified.csv");
+%writematrix(all_emg_data, "emg_data_reclassified.csv");
