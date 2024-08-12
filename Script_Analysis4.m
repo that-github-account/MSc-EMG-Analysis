@@ -579,9 +579,11 @@ for p = 1:length(filenames)
     succ_force = [R_succ_force; L_succ_force];
     succ_force_reclassified_fail = succ_force(participant_index, :);
     succ_force_reclassified_succ = succ_force(~participant_index, :);
-
-    all_t_rec_fail_force = [all_t_rec_fail_force; succ_force_reclassified_fail];
-    all_t_rec_succ_force = [all_t_rec_succ_force; succ_force_reclassified_succ];
+       
+    if p ~= 12 || p~= 18 
+        all_t_rec_fail_force = [all_t_rec_fail_force; succ_force_reclassified_fail];
+        all_t_rec_succ_force = [all_t_rec_succ_force; succ_force_reclassified_succ];
+    end
 
     succ_force_reclassified_fail = mean(succ_force_reclassified_fail);
     succ_force_reclassified_succ = mean(succ_force_reclassified_succ);
@@ -606,6 +608,12 @@ for p = 1:length(filenames)
     title(append(p_str, " L Force"))
 
 end
+
+all_t_rec_fail_force_se = std(all_t_rec_fail_force)/sqrt(size(all_t_rec_fail_force, 1));
+all_t_rec_succ_force_se = std(all_t_rec_succ_force)/sqrt(size(all_t_rec_succ_force, 1));
+
+all_t_rec_fail_emg_se = std(all_t_rec_fail_emg)/sqrt(size(all_t_rec_fail_emg, 1));
+all_t_rec_succ_emg_se = std(all_t_rec_succ_emg)/sqrt(size(all_t_rec_succ_emg, 1));
 
 all_t_rec_fail_force = mean(all_t_rec_fail_force);
 all_t_rec_succ_force = mean(all_t_rec_succ_force);
