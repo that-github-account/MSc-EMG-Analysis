@@ -7,18 +7,18 @@ clc
 % Choose which datasets to graph
 
 plot_force = true; %either both or one must be true
-plot_emg = true;
+plot_emg = false;
 
-plot_right_hand = true; % either both or one must be true 
+plot_right_hand = false; % either both or one must be true 
 plot_left_hand = true;
 
 plot_fail = true;
-plot_success = true;
+plot_success = false;
 
-plot_passive = false;
+plot_passive = true;
 
 all_subjects = false; % specify subject if false 
-specific_subject = 17;
+specific_subject = 11;
 
 which_data = 2; %1 = trials excluded, 2 = trials not excluded
 
@@ -418,14 +418,18 @@ for p = 1:length(filenames)
 % despite the amplitude still being large (on these trials it will be
 % comparateively very small) so theses are also changed to 0
 
-index_of_values_to_replace = str2double(all_force_data(:, 4:5)) < 0;
-index_of_values_to_replace = (index_of_values_to_replace(:, 1) + index_of_values_to_replace(:, 2)) > 0;
-all_force_data(index_of_values_to_replace, 4:7) = 0;
+if plot_force == true
+    index_of_values_to_replace = str2double(all_force_data(:, 4:5)) < 0;
+    index_of_values_to_replace = (index_of_values_to_replace(:, 1) + index_of_values_to_replace(:, 2)) > 0;
+    all_force_data(index_of_values_to_replace, 4:7) = 0;
+end
 
-index_of_values_to_replace = str2double(all_emg_data(:, 4:5)) < 0;
-index_of_values_to_replace = (index_of_values_to_replace(:, 1) + index_of_values_to_replace(:, 2)) > 0;
-all_emg_data(index_of_values_to_replace, 4:7) = 0;
 
+if plot_emg == true
+    index_of_values_to_replace = str2double(all_emg_data(:, 4:5)) < 0;
+    index_of_values_to_replace = (index_of_values_to_replace(:, 1) + index_of_values_to_replace(:, 2)) > 0;
+    all_emg_data(index_of_values_to_replace, 4:7) = 0;
+end
 
 %% Save Data
 
